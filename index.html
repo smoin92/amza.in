@@ -1,11 +1,573 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oracle Fusion Reference Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #eef2f7;
+  --panel: #ffffff;
+  --ink: #17202c;
+  --muted: #617083;
+  --line: #d8e0eb;
+  --nav: #101a26;
+  --blue: #2563eb;
+  --teal: #0f9f9a;
+  --green: #168057;
+  --amber: #b7791f;
+  --shadow: 0 18px 50px rgba(21, 32, 48, 0.12);
+  font-size: 15px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "IBM Plex Sans", Arial, sans-serif;
+  color: var(--ink);
+  background:
+    linear-gradient(120deg, rgba(37, 99, 235, 0.10), transparent 34%),
+    linear-gradient(260deg, rgba(15, 159, 154, 0.10), transparent 30%),
+    var(--bg);
+}
+
+a {
+  color: inherit;
+}
+
+.topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(16, 26, 38, 0.96);
+  color: #f8fafc;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--blue);
+  box-shadow: inset 0 0 0 1px rgba(16, 26, 38, 0.08);
+}
+
+.brand-text {
+  min-width: 0;
+}
+
+.brand-text strong {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.brand-text span {
+  display: block;
+  color: #9fb0c4;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  margin-top: 2px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #c9d5e5;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.shell {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  align-items: center;
+  gap: 38px;
+  padding: 54px 0 34px;
+}
+
+.hero h1 {
+  margin: 0;
+  max-width: 780px;
+  font-size: clamp(2.35rem, 5vw, 4.6rem);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.hero p {
+  max-width: 680px;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 10px 15px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(21, 32, 48, 0.08);
+}
+
+.button.primary {
+  border-color: #1d4ed8;
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.visual {
+  min-height: 330px;
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.28), transparent 30%),
+    linear-gradient(135deg, #132033, #26384e 58%, #0f766e);
+  box-shadow: var(--shadow);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.visual-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.09) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
+}
+
+.diagram {
+  position: absolute;
+  inset: 34px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 28px rgba(5, 12, 24, 0.24);
+}
+
+.node:nth-child(2),
+.node:nth-child(5) {
+  transform: translateY(20px);
+}
+
+.node i {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 7px;
+  background: #e7eefc;
+  color: var(--blue);
+}
+
+.node span {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 10px 0 18px;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.section-head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding-bottom: 44px;
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  padding: 20px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(216, 224, 235, 0.95);
+  box-shadow: 0 12px 34px rgba(21, 32, 48, 0.09);
+  text-decoration: none;
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+
+.tool-card.available:hover {
+  transform: translateY(-3px);
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: 0 18px 42px rgba(21, 32, 48, 0.14);
+}
+
+.tool-card.disabled {
+  color: #66758a;
+}
+
+.tool-top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.tool-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #ffffff;
+}
+
+.hcm { background: var(--blue); }
+.scm { background: var(--teal); }
+.fin { background: var(--green); }
+
+.tag {
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: #e8f0ff;
+  color: #1d4ed8;
+  white-space: nowrap;
+}
+
+.disabled .tag {
+  background: #f0f3f7;
+  color: #7a8798;
+}
+
+.tool-card h3 {
+  margin: 22px 0 8px;
+  font-size: 1.18rem;
+}
+
+.tool-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+}
+
+.meta span {
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #475569;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+}
+
+.card-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 22px;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.disabled .card-action {
+  color: #7a8798;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0 34px;
+  border-top: 1px solid rgba(216, 224, 235, 0.9);
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+@media (max-width: 860px) {
+  .topbar {
+    padding: 0 18px;
+  }
+
+  .status-pill {
+    display: none;
+  }
+
+  .shell {
+    width: min(100% - 28px, 1120px);
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 34px;
+  }
+
+  .visual {
+    min-height: 250px;
+  }
+
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-head,
+  .footer {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .brand-text span {
+    display: none;
+  }
+
+  .hero h1 {
+    font-size: 2.35rem;
+  }
+
+  .diagram {
+    inset: 18px;
+    gap: 10px;
+  }
+
+  .node {
+    padding: 10px;
+  }
+
+  .node i {
+    width: 26px;
+    height: 26px;
+  }
+
+  .node span {
+    font-size: 0.68rem;
+  }
+}
+</style>
 </head>
 <body>
-    <h1>Welcome to the Index Page!</h1>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16"></path>
+        <path d="M8 4v16M16 4v16"></path>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <strong>Oracle Fusion Reference Tools</strong>
+      <span>HCM | SCM | FINANCE</span>
+    </div>
+  </div>
+  <div class="status-pill"><span class="status-dot"></span> HCM reference available</div>
+</header>
+
+<main class="shell">
+  <section class="hero">
+    <div>
+      <h1>Oracle Fusion table references in one workspace.</h1>
+      <p>
+        Fast access pages for functional and technical lookups across HCM, SCM, and Finance.
+        Start with the HCM table reference now, then add SCM and Finance files when they are ready.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="oracle_hcm_reference.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+          </svg>
+          Open HCM Reference
+        </a>
+        <a class="button" href="#tools">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path>
+          </svg>
+          View Tools
+        </a>
+      </div>
+    </div>
+
+    <div class="visual" aria-hidden="true">
+      <div class="visual-grid"></div>
+      <div class="diagram">
+        <div class="node"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-8 0v2"></path><circle cx="12" cy="7" r="4"></circle></svg></i><span>PER_ALL_PEOPLE_F</span></div>
+        <div class="node"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path></svg></i><span>ASSIGNMENTS</span></div>
+        <div class="node"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7 8h10M7 12h10M7 16h6"></path></svg></i><span>ELEMENTS</span></div>
+        <div class="node"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path></svg></i><span>PAYROLL</span></div>
+        <div class="node"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h16"></path><path d="M4 15h16"></path><path d="M8 15V5h8v10"></path></svg></i><span>BALANCES</span></div>
+        <div class="node"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"></path><path d="M8 8h8v8H8z"></path></svg></i><span>REPORTING</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="section-head">
+      <div>
+        <h2>Available Tools</h2>
+        <p>Reference modules can be added here as separate HTML files.</p>
+      </div>
+    </div>
+
+    <div class="tool-grid">
+      <a class="tool-card available" href="oracle_hcm_reference.html">
+        <div class="tool-top">
+          <div class="tool-icon hcm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-8 0v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <span class="tag">LIVE</span>
+        </div>
+        <h3>Oracle Fusion HCM</h3>
+        <p>Employee, assignment, payroll, documents, transaction, and reporting table reference.</p>
+        <div class="meta">
+          <span>Tables</span>
+          <span>Search</span>
+          <span>Navigation</span>
+        </div>
+        <div class="card-action">
+          Open reference
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </div>
+      </a>
+
+      <div class="tool-card disabled" aria-disabled="true">
+        <div class="tool-top">
+          <div class="tool-icon scm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <path d="m3.3 7 8.7 5 8.7-5"></path>
+              <path d="M12 22V12"></path>
+            </svg>
+          </div>
+          <span class="tag">COMING SOON</span>
+        </div>
+        <h3>Oracle Fusion SCM</h3>
+        <p>Purchasing, inventory, order management, receiving, costing, and procurement reference.</p>
+        <div class="meta">
+          <span>Upload later</span>
+          <span>SCM</span>
+        </div>
+        <div class="card-action">Waiting for file</div>
+      </div>
+
+      <div class="tool-card disabled" aria-disabled="true">
+        <div class="tool-top">
+          <div class="tool-icon fin">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 21h18"></path>
+              <path d="M5 21V7l7-4 7 4v14"></path>
+              <path d="M9 21v-8h6v8"></path>
+            </svg>
+          </div>
+          <span class="tag">COMING SOON</span>
+        </div>
+        <h3>Oracle Fusion Finance</h3>
+        <p>GL, AP, AR, FA, cash management, subledger accounting, and reconciliation reference.</p>
+        <div class="meta">
+          <span>Upload later</span>
+          <span>Finance</span>
+        </div>
+        <div class="card-action">Waiting for file</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="shell footer">
+  <span>Oracle Fusion Reference Tools</span>
+  <span>Add future pages in this folder and link them from the tool cards.</span>
+</footer>
 </body>
 </html>
